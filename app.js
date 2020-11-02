@@ -23,6 +23,7 @@ const Review = mongoose.model("Review", {
 app.set("view engine", "handlebars");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
+app.use(methodOverride("_method"));
 
 app.get("/", (req, res) => {
   Review.find()
@@ -35,7 +36,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/reviews/new", (req, res) => {
-  res.render("reviews-new", {title: "New Review"});
+  res.render("reviews-new", { title: "New Review" });
 });
 
 app.get("/reviews/:id", (req, res) => {
@@ -51,7 +52,7 @@ app.get("/reviews/:id", (req, res) => {
 // EDIT
 app.get("/reviews/:id/edit", (req, res) => {
   Review.findById(req.params.id, function (err, review) {
-    res.render("reviews-edit", { review: review,  title: "Edit Review" });
+    res.render("reviews-edit", { review: review, title: "Edit Review" });
   });
 });
 
@@ -70,6 +71,17 @@ app.put("/reviews/:id", (req, res) => {
   Review.findByIdAndUpdate(req.params.id, req.body)
     .then((review) => {
       res.redirect(`/reviews/${review._id}`);
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
+});
+
+app.delete("/reviews/:id", function (req, res) {
+  console.log("DELETE review");
+  Review.findByIdAndRemove(req.params.id)
+    .then((review) => {
+      res.redirect("/");
     })
     .catch((err) => {
       console.log(err.message);
