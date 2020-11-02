@@ -19,21 +19,17 @@ const Review = mongoose.model("Review", {
   movieTitle: String,
 });
 
+
+
 // app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
 
-app.get("/", (req, res) => {
-  Review.find()
-    .then((reviews) => {
-      res.render("reviews-index", { reviews: reviews });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
+const reviews = require('./controller/reviews')(app, Review);
+
+
 
 app.get("/reviews/new", (req, res) => {
   res.render("reviews-new", { title: "New Review" });
