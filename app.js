@@ -1,5 +1,6 @@
 const express = require("express");
 // const exphbs = require("express-handlebars");
+const methodOverride = require("method-override");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
@@ -34,7 +35,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/reviews/new", (req, res) => {
-  res.render("reviews-new", {});
+  res.render("reviews-new", {title: "New Review"});
 });
 
 app.get("/reviews/:id", (req, res) => {
@@ -47,6 +48,13 @@ app.get("/reviews/:id", (req, res) => {
     });
 });
 
+// EDIT
+app.get("/reviews/:id/edit", (req, res) => {
+  Review.findById(req.params.id, function (err, review) {
+    res.render("reviews-edit", { review: review,  title: "Edit Review" });
+  });
+});
+
 app.post("/reviews", (req, res) => {
   Review.create(req.body)
     .then((review) => {
@@ -55,6 +63,16 @@ app.post("/reviews", (req, res) => {
     })
     .catch((err) => {
       console.log("error" + err.massage);
+    });
+});
+
+app.put("/reviews/:id", (req, res) => {
+  Review.findByIdAndUpdate(req.params.id, req.body)
+    .then((review) => {
+      res.redirect(`/reviews/${review._id}`);
+    })
+    .catch((err) => {
+      console.log(err.message);
     });
 });
 
