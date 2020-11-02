@@ -1,18 +1,30 @@
 const express = require("express");
 const exphbs = require("express-handlebars");
+const mongoose = require("mongoose");
 
 const app = express();
+
+mongoose.connect("mongodb://localhost:27017/rotten-onion", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+const Review = mongoose.model("Review", {
+  title: String,
+  movieTitle: String,
+});
 
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-let reviews = [
-  { title: "Great Review", movieTitle: "Batman II" },
-  { title: "Awesome Movie", movieTitle: "Titanic" },
-];
-
 app.get("/", (req, res) => {
-  res.render("reviews-index", { reviews: reviews });
+  Review.find()
+    .then((reviews) => {
+      res.render("reviews-index", { reviews: reviews });
+    })
+    .catch((err) => {
+      console.log("error...........");
+    });
 });
 
 app.listen(3000, () => {
