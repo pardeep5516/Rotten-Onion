@@ -1,0 +1,13 @@
+<%- include('layouts/header.ejs') -%>
+
+<h1>Reviews</h1>
+
+<a href="/reviews/new">New Review</a>
+
+
+<% reviews.forEach((review) => { %>
+    <h2><a href="/reviews/<%= review._id %>"><%= review.title %></a></h2>
+    <small><%= review.movieTitle %></small>
+<% }) %>
+
+<%- include('layouts/footer.ejs') -%>
