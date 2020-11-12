@@ -4,6 +4,7 @@ const methodOverride = require("method-override");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
+const moment = require("moment");
 
 const app = express();
 
@@ -14,13 +15,19 @@ mongoose.connect("mongodb://localhost:27017/rotten-onion", {
 
 const Schema = mongoose.Schema;
 
-const Review = mongoose.model("Review", {
-  title: String,
-  image: String,
-  rating: Number,
-  description: String,
-  movieTitle: String,
-});
+const Review = mongoose.model(
+  "Review",
+  new mongoose.Schema(
+    {
+      title: String,
+      image: String,
+      rating: Number,
+      description: String,
+      movieTitle: String,
+    },
+    { timestamp: true }
+  )
+);
 
 const Comment = mongoose.model("Comment", {
   title: String,
@@ -44,8 +51,12 @@ app.get("/reviews/:id", (req, res) => {
   // find review
   Review.findById(req.params.id)
     .then((review) => {
+      let createdAt = review.createdAt;
+      createdAt = moment(createdAt).format("MMMM Do YYYY, h:mm:ss a");
+      review.createdAtFormatted = createdAt;
       // fetch its comments
       Comment.find({ reviewId: req.params.id }).then((comments) => {
+        comments.reverse();
         // respond with the template with both values
         res.render("reviews-show", { review: review, comments: comments });
       });
@@ -107,14 +118,16 @@ app.post("/reviews/comments", (req, res) => {
     });
 });
 
-app.delete('/reviews/comments/:id', function (req, res) {
-  console.log("DELETE comment")
-  Comment.findByIdAndRemove(req.params.id).then((comment) => {
-    res.redirect(`/reviews/${comment.reviewId}`);
-  }).catch((err) => {
-    console.log(err.message);
-  })
-})
+app.delete("/reviews/comments/:id", function (req, res) {
+  console.log("DELETE comment");
+  Comment.findByIdAndRemove(req.params.id)
+    .then((comment) => {
+      res.redirect(`/reviews/${comment.reviewId}`);
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
+});
 
 app.listen(3000, () => {
   console.log("App listening on port 3000!");
