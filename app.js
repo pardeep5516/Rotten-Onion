@@ -106,6 +106,15 @@ app.post("/reviews/comments", (req, res) => {
     });
 });
 
+app.delete('/reviews/comments/:id', function (req, res) {
+  console.log("DELETE comment")
+  Comment.findByIdAndRemove(req.params.id).then((comment) => {
+    res.redirect(`/reviews/${comment.reviewId}`);
+  }).catch((err) => {
+    console.log(err.message);
+  })
+})
+
 app.listen(3000, () => {
   console.log("App listening on port 3000!");
 });
