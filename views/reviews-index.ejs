@@ -7,6 +7,8 @@
 
 <% reviews.forEach((review) => { %>
     <div class="col-md-3">
+        <a href="/reviews/<%= review._id %>">
+        <img src="<%= review.image %>" class="img-fluid" alt="Responsive image"> </a>
     <h2><a href="/reviews/<%= review._id %>"><%= review.title %></a></h2>
     <small><%= review.movieTitle %></small>
     </div>

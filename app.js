@@ -16,6 +16,7 @@ const Schema = mongoose.Schema;
 
 const Review = mongoose.model("Review", {
   title: String,
+  image: String,
   rating: Number,
   description: String,
   movieTitle: String,
