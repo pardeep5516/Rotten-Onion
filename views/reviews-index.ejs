@@ -2,12 +2,15 @@
 
 <h1>Reviews</h1>
 
-<a href="/reviews/new">New Review</a>
+<div class="row">
 
 
 <% reviews.forEach((review) => { %>
+    <div class="col-md-3">
     <h2><a href="/reviews/<%= review._id %>"><%= review.title %></a></h2>
     <small><%= review.movieTitle %></small>
+    </div>
 <% }) %>
-
+</div>
 <%- include('layouts/footer.ejs') -%>
+

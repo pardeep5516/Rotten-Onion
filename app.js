@@ -19,17 +19,13 @@ const Review = mongoose.model("Review", {
   movieTitle: String,
 });
 
-
-
 // app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
 
-const reviews = require('./controller/reviews')(app, Review);
-
-
+const reviews = require("./controller/reviews")(app, Review);
 
 app.get("/reviews/new", (req, res) => {
   res.render("reviews-new", { title: "New Review" });
@@ -87,3 +83,5 @@ app.delete("/reviews/:id", function (req, res) {
 app.listen(3000, () => {
   console.log("App listening on port 3000!");
 });
+
+module.exports = app;

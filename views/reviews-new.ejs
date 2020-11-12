@@ -1,24 +1,33 @@
 <!-- views/reviews-new.handlebars -->
+<%- include('layouts/header.ejs') -%>
 
+<div class="row">
+  <div class="col-sm-6 col-sm-offset-3">
 <form method="POST" action="/reviews">
   <fieldset>
     <legend><%= title %></legend>
     <!-- TITLE -->
     <p>
+      <div class="form-group">
       <label for="review-title">Title</label><br>
-      <input id="review-title" type="text" name="title" />
+      <input class="form-control" id="review-title" type="text" name="title" />
+   </div> 
     </p>
 
     <!-- MOVIE TITLE -->
     <p>
+      <div class="form-group">
       <label for="movie-title">Movie Title</label><br>
-      <input id="movie-title" type="text" name="movieTitle" />
+      <input class="form-control" id="movie-title" type="text" name="movieTitle" />
+      </div>
     </p>
     <!-- RATING -->
 
+    <div class="form-group">
+
     <label for="rating">Rating</label>
 
-    <select name="rating" id="rating">
+    <select class="form-control" name="rating" id="rating">
         <option name='0' value="0">0</option>
         <option name='1' value="1">1</option>
         <option name='2' value="2">2</option>
@@ -27,17 +36,26 @@
         <option name='5' value="5">5</option>
 
     </select>
-
+</div>
     <!-- DESCRIPTION -->
     <p>
+      <div class="form-group">
       <label for="description-text">Description</label><br>
-      <textarea id="description-text" name="description" rows="10" /></textarea>
+      <textarea class="form-control" id="description-text" name="description" rows="10" /></textarea>
+    </div>
     </p>
   </fieldset>
 
   <!-- BUTTON -->
   <p>
-    <button type="submit">Save Review</button>
+    <div class="form-group">
+      <button class="btn btn-primary" type="submit">Save Review</button>
+    </div>
   </p>
 
 </form>
+
+</div>
+</div>
+
+<%- include('layouts/footer.ejs') -%>

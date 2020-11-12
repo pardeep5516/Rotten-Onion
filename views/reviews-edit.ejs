@@ -1,23 +1,32 @@
 <!-- views/reviews-edit.handlebars -->
+<%- include('layouts/header.ejs') -%>
 
+<div class="row">
+  <div class="col-sm-6 col-sm-offset-3">
 <form method="POST" action="/reviews/<%= review._id %>?_method=PUT">
     <fieldset>
       <legend><%= title %></legend>
       <!-- TITLE -->
       <p>
+        <div class="form-group">
         <label for="review-title">Title</label><br>
-        <input id="review-title" type="text" name="title" value="<%= review.title %>"/>
+        <input class="form-control" id="review-title" type="text" name="title" value="<%= review.title %>"/>
+      </div>
       </p>
   
       <!-- MOVIE TITLE -->
       <p>
+        <div class="form-group">
         <label for="movie-title">Movie Title</label><br>
-        <input id="movie-title" type="text" name="movieTitle" value="<%= review.movieTitle %>" />
+        <input class="form-control" id="movie-title" type="text" name="movieTitle" value="<%= review.movieTitle %>" />
+    </div>
       </p>
+
+      <div class="form-group">
     <label for="rating">Rating</label>
 
       <!-- RATING -->
-      <select name="rating" id="rating">
+      <select class="form-control" name="rating" id="rating">
         <option name='0' value="*"><%= review.rating %></option>
         <option name='0' value="0">0</option>
         <option name='1' value="1">1</option>
@@ -27,15 +36,22 @@
         <option name='5' value="5">5</option>
 
     </select>
-  
+  </div>
       <!-- DESCRIPTION -->
       <p>
+        <div class="form-group">
         <label for="review-description">Description</label><br>
-        <textarea id="review-description" name="description" rows="10" /><%= review.description %></textarea>
+        <textarea class="form-control" id="review-description" name="description" rows="10" /><%= review.description %></textarea>
+     </div>
       </p>
     </fieldset>
     <!-- BUTTON -->
     <p>
-      <button type="submit">Save Review</button>
+      <div class="form-group">
+        <button class="btn btn-primary" type="submit">Save Review</button>
+      </div>
     </p>
   </form>
+</div>
+</div>
+<%- include('layouts/footer.ejs') -%>
