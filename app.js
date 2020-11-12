@@ -12,11 +12,19 @@ mongoose.connect("mongodb://localhost:27017/rotten-onion", {
   useUnifiedTopology: true,
 });
 
+const Schema = mongoose.Schema;
+
 const Review = mongoose.model("Review", {
   title: String,
   rating: Number,
   description: String,
   movieTitle: String,
+});
+
+const Comment = mongoose.model("Comment", {
+  title: String,
+  content: String,
+  reviewId: { type: Schema.Types.ObjectId, ref: "Review" },
 });
 
 // app.engine("handlebars", exphbs({ defaultLayout: "main" }));
@@ -32,11 +40,17 @@ app.get("/reviews/new", (req, res) => {
 });
 
 app.get("/reviews/:id", (req, res) => {
+  // find review
   Review.findById(req.params.id)
     .then((review) => {
-      res.render("reviews-show", { review: review });
+      // fetch its comments
+      Comment.find({ reviewId: req.params.id }).then((comments) => {
+        // respond with the template with both values
+        res.render("reviews-show", { review: review, comments: comments });
+      });
     })
     .catch((err) => {
+      // catch errors
       console.log(err.message);
     });
 });
@@ -74,6 +88,18 @@ app.delete("/reviews/:id", function (req, res) {
   Review.findByIdAndRemove(req.params.id)
     .then((review) => {
       res.redirect("/");
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
+});
+
+// NEW Comment
+app.post("/reviews/comments", (req, res) => {
+  Comment.create(req.body)
+    .then((comment) => {
+      console.log(comment);
+      res.redirect(`/reviews/${comment.reviewId}`);
     })
     .catch((err) => {
       console.log(err.message);
