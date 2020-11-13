@@ -1,0 +1,11 @@
+<h1>Now Playing</h1>
+<div class="row">
+<% movies.forEach((movie) => { %>
+        <div class="card">
+            <div class="col-md-3 card-body">
+                <h2 class="card-title"><%= movie.title %></h2>
+                <a href="/movies/<%= movie.id %>"><img alt="<%= movie.title %>" src="https://image.tmdb.org/t/p/w154<%= movie.poster_path %>"></a>
+            </div>
+        </div>
+<% }) %>
+</div>

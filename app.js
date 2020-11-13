@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const moment = require("moment");
+const { MovieDb } = require("moviedb-promise");
 
 const app = express();
 
@@ -41,10 +42,22 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
 
-const reviews = require("./controller/reviews")(app, Review);
+// const reviews = require("./controller/reviews")(app, Review);
 
 app.get("/reviews/new", (req, res) => {
   res.render("reviews-new", { title: "New Review" });
+});
+
+const moviedb = new MovieDb("346587d8d34a466a3fa4a1f3838bc6f8");
+
+app.get("/", (req, res) => {
+  moviedb
+    .searchMovie({ query: "Action" })
+    .then((response) => {
+      console.log(response);
+      res.render("movies-index", { movies: response.results });
+    })
+    .catch(console.error);
 });
 
 app.get("/reviews/:id", (req, res) => {
